@@ -1,6 +1,6 @@
 <?php
 /**
- * Template Name: Page Properties
+ * Template Name: Page Properties   (http://www.fragaproperties.com/category/properties/current-properties/)
  */
 
 
