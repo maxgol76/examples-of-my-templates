@@ -1,6 +1,6 @@
 <?php
 /**
- * Template Name: Page Home
+ * Template Name: Page Home (http://mobilewashndnw.com/)
  */
 
 get_header(); ?>
