@@ -46,14 +46,14 @@ do_action('woocommerce_before_add_to_cart_form' ); ?>
                                         if ( in_array( $term->slug, $options ) ):
 
                                             $vars = get_posts( array(
-                                                'post_type' => 'product_variation',
+                                                'post_type'   => 'product_variation',
                                                 'post_status' => array('publish'),
                                                 'numberposts' => 1,
                                                 'post_parent' => $product->id,
-                                                'meta_query' => array(
+                                                'meta_query'  => array(
                                                     array(
-                                                        'key' => 'attribute_pa_traffic-plan',
-                                                        'value' => $term->slug,
+                                                        'key'     => 'attribute_pa_traffic-plan',
+                                                        'value'   => $term->slug,
                                                         'compare' => '=',
                                                     ),
                                                 ),
@@ -196,14 +196,14 @@ do_action('woocommerce_before_add_to_cart_form' ); ?>
 
                 $target = get_terms("pa_niches", array(
                     'hide_empty' => false,
-                    'orderby' => 'slug',
-                    'order' => 'ASC'
+                    'orderby'    => 'slug',
+                    'order'      => 'ASC'
                 ));
 
                 $countries = get_terms("pa_countries", array(
                     'hide_empty' => false,
-                    'orderby' => 'slug',
-                    'order' => 'ASC'
+                    'orderby'    => 'slug',
+                    'order'      => 'ASC'
                 ));
 
                 ob_start(); ?>
@@ -299,26 +299,26 @@ do_action('woocommerce_before_add_to_cart_form' ); ?>
 
                                 $paypal = get_post_meta( $product->id, 'PayPal', true );
 
-                                if ( $paypal && stristr($paypal, "off")) {
-                                    unset( $available_gateways['paypal'] );
+                                if ( $paypal && stristr($paypal, "off" ) ) {
+                                    unset( $available_gateways[ 'paypal' ] );
                                 }
 
                                 $paytabs = get_post_meta( $product->id, 'PayTabs', true );
 
-                                if ( $paytabs && stristr( $paytabs, "off") ) {
-                                    unset( $available_gateways['paytabs'] );
+                                if ( $paytabs && stristr( $paytabs, "off" ) ) {
+                                    unset( $available_gateways[ 'paytabs' ] );
                                 }
 
                                 ?>
                                 <?php
 
-                                if ( ! empty($available_gateways) ) {
+                                if ( ! empty( $available_gateways ) ) {
 
                                     // Chosen Method
-                                    if ( isset(WC()->session->chosen_payment_method ) && isset($available_gateways[WC()->session->chosen_payment_method]) ) {
-                                        $available_gateways[WC()->session->chosen_payment_method]->set_current();
+                                    if ( isset(WC()->session->chosen_payment_method ) && isset( $available_gateways[WC()->session->chosen_payment_method]) ) {
+                                        $available_gateways[ WC()->session->chosen_payment_method ]->set_current();
                                     } elseif ( isset( $available_gateways[get_option('woocommerce_default_gateway')]) ) {
-                                        $available_gateways[get_option('woocommerce_default_gateway')]->set_current();
+                                        $available_gateways[ get_option('woocommerce_default_gateway') ]->set_current();
                                     } else {
                                         current( $available_gateways )->set_current();
                                     }
@@ -339,10 +339,7 @@ do_action('woocommerce_before_add_to_cart_form' ); ?>
                                 } else {
                                     echo '<li class="woocommerce-notice woocommerce-notice--info woocommerce-info">' . apply_filters('woocommerce_no_available_payment_methods_message', WC()->customer->get_billing_country() ? esc_html__('Sorry, it seems that there are no available payment methods for your state. Please contact us if you require assistance or wish to make alternate arrangements.', 'woocommerce') : esc_html__('Please fill in your details above to see available payment methods.', 'woocommerce')) . '</li>'; // @codingStandardsIgnoreLine
                                 }
-                                ?>
-
-                                <?php
-                                ?>
+                                ?>                               
 
                             </div>
                         </div>
