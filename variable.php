@@ -11,15 +11,15 @@ global $product;
 
 $attribute_keys = array_keys( $attributes );
 
-do_action('woocommerce_before_add_to_cart_form'); ?>
+do_action('woocommerce_before_add_to_cart_form' ); ?>
 
     <form class="variations_form cart" method="post" enctype='multipart/form-data'
-          data-product_id="<?php echo absint( $product->id ); ?>"
-          data-product_variations="<?php echo htmlspecialchars(json_encode( $available_variations )) ?>">
+          data-product_id="<?php echo esc_attr( absint( $product->id ) ); ?>"
+          data-product_variations="<?php echo htmlspecialchars( json_encode( $available_variations ) ) ?>">
         <?php do_action('woocommerce_before_variations_form'); ?>
 
         <?php if ( empty( $available_variations ) && false !== $available_variations ) : ?>
-            <p class="stock out-of-stock"><?php _e('This product is currently out of stock and unavailable.', 'woocommerce'); ?></p>
+            <p class="stock out-of-stock"><?php _e( 'This product is currently out of stock and unavailable.', 'woocommerce' ); ?></p>
         <?php else :
             ?>
 
@@ -33,7 +33,7 @@ do_action('woocommerce_before_add_to_cart_form'); ?>
 
                             <?php $attribute_name = 'pa_traffic-plan'; ?>
 
-                            <div class="choose-order-step-section-plans" data-variation="<?php echo $attribute_name; ?>">
+                            <div class="choose-order-step-section-plans" data-variation="<?php echo esc_attr( $attribute_name ); ?>">
 
                                 <?php $options = $attributes[$attribute_name];
                                 if ( ! empty($options) ) :
@@ -41,9 +41,9 @@ do_action('woocommerce_before_add_to_cart_form'); ?>
                                         wc_clean($_REQUEST['attribute_' . sanitize_title($attribute_name)]) :
                                         $product->get_variation_default_attribute($attribute_name); ?>
 
-                                    <?php $terms = wc_get_product_terms($product->id, $attribute_name, array('fields' => 'all'));
-                                    foreach ($terms as $term):
-                                        if (in_array($term->slug, $options)):
+                                    <?php $terms = wc_get_product_terms( $product->id, $attribute_name, array('fields' => 'all') );
+                                    foreach ( $terms as $term ):
+                                        if ( in_array( $term->slug, $options ) ):
 
                                             $vars = get_posts( array(
                                                 'post_type' => 'product_variation',
@@ -60,21 +60,21 @@ do_action('woocommerce_before_add_to_cart_form'); ?>
                                             ));
 
                                             $var = $vars[0]->ID;
-                                            $var_price = get_post_meta($var, '_regular_price', true);
-                                            $var_visitors = get_post_meta($var, '_plan_visitors', true);
-                                            $var_niches = get_post_meta($var, '_plan_niches', true);
-                                            $var_sku = get_post_meta($var, '_sku', true);
+                                            $var_price = get_post_meta( $var, '_regular_price', true );
+                                            $var_visitors = get_post_meta( $var, '_plan_visitors', true );
+                                            $var_niches = get_post_meta( $var, '_plan_niches', true );
+                                            $var_sku = get_post_meta( $var, '_sku', true );
 
                                             printf('<div class="order-step-section-plans widget_custom_html">
-													<a href="#" data-value="%s" class="order-step-section %s %s">
-													<div class="panel-widget-style">
-														<div class="visitors-order">
-															<span class="order-step-section-visitors-amount">%s</span>
-														</div>
-														<div class="order-step-section-price price-order">%s</div>
-													</div>
-													</a>
-											</div>',
+							<a href="#" data-value="%s" class="order-step-section %s %s">
+								<div class="panel-widget-style">
+									<div class="visitors-order">
+										<span class="order-step-section-visitors-amount">%s</span>
+									</div>
+									<div class="order-step-section-price price-order">%s</div>
+								</div>
+							</a>
+						</div>',
 
                                                 $term->slug,
                                                 $term->slug,
@@ -87,7 +87,7 @@ do_action('woocommerce_before_add_to_cart_form'); ?>
                                     endforeach; ?>
 
                                     <div class="variations" style="display: none;">
-                                        <?php wc_dropdown_variation_attribute_options(array('options' => $options, 'attribute' => $attribute_name, 'product' => $product, 'selected' => $selected)); ?>
+                                        <?php wc_dropdown_variation_attribute_options ( array( 'options' => $options, 'attribute' => $attribute_name, 'product' => $product, 'selected' => $selected ) ); ?>
                                     </div>
 
                                 <?php endif; ?>
@@ -106,44 +106,40 @@ do_action('woocommerce_before_add_to_cart_form'); ?>
                                 </div>
                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                     <div class="currency-section">
-                                        <?php do_action('wcml_currency_switcher', array('format' => '%code%',
-                                            'switcher_style' => 'wcml-horizontal-list')); ?>
+                                        <?php do_action( 'wcml_currency_switcher', array( 'format' => '%code%', 'switcher_style' => 'wcml-horizontal-list') ); ?>
                                     </div>
                                 </div>
                             </div>
-
                         </section>
-
                     </div>
-
 
                     <div class="wrap">
                         <?php $attribute_name = 'pa_frequency'; ?>
 
                         <!-- Frequency selection -->
-                        <div class="choose-frequency" data-variation="<?= $attribute_name; ?>">
+                        <div class="choose-frequency" data-variation="<?php echo esc_attr( $attribute_name ); ?>">
 
                             <h4 class="order-section-sub-title text-center"><?php _e('Choose payment type', 'woocommerce'); ?>
                                 <span class="has-tip rbl-hint tooltip-help" rel="tooltip" title="Choose whether you want to receive visitors each month, recurring or just once">?</span>
                             </h4>
 
-                            <?php $options = $attributes[$attribute_name];
-                            if ( ! empty($options) ) :
-                                $selected = isset($_REQUEST['attribute_' . sanitize_title($attribute_name)]) ?
-                                    wc_clean($_REQUEST['attribute_' . sanitize_title($attribute_name)]) :
-                                    $product->get_variation_default_attribute($attribute_name);
-                                $selected2 = $selected; // = 'one-time';
+                            <?php $options = $attributes[ $attribute_name ];
+                            if ( ! empty( $options ) ) :
+                                $selected = isset($_REQUEST['attribute_' . sanitize_title( $attribute_name )]) ?
+                                    wc_clean($_REQUEST['attribute_' . sanitize_title( $attribute_name )]) :
+                                    $product->get_variation_default_attribute( $attribute_name );
+                                $selected2 = $selected;
                                 ?>
 
-                                <?php $terms = get_terms($attribute_name);
+                                <?php $terms = get_terms( $attribute_name );
 
                                 foreach ( $terms as $term ) { ?>
                                     <div class="frequency-item">
-                                        <a href="#" data-value="<?php echo $term->slug; ?>"
-                                           class="frequency-item-section <?php echo stristr($term->slug, $selected) !== false ? 'selected' : '' ?>">
+                                        <a href="#" data-value="<?php echo esc_attr( $term->slug ); ?>"
+                                           class="frequency-item-section <?php echo esc_attr( stristr($term->slug, $selected) !== false ? 'selected' : '' ); ?>">
                                             <div class="panel-widget-style">
                                                 <div class="visitors-order">
-                                                    <span class=""><?php echo $term->name; ?></span>
+                                                    <span class=""><?php echo esc_attr( $term->name ); ?></span>
                                                 </div>
                                                 <div class="frequency-info">
 
@@ -162,14 +158,14 @@ do_action('woocommerce_before_add_to_cart_form'); ?>
                                         </a>
                                     </div>
 
-                                    <?php if ( stristr($term->slug, $selected) !== false ) {
+                                    <?php if ( stristr( $term->slug, $selected ) !== false ) {
                                         $selected2 = $term->slug;
                                     } ?>
 
                                 <?php } ?>
 
                                 <div class="variations" style="display: none;">
-                                    <?php wc_dropdown_variation_attribute_options(array('options' => $options, 'attribute' => $attribute_name, 'product' => $product, 'selected' => $selected2)); ?>
+                                    <?php wc_dropdown_variation_attribute_options( array('options' => $options, 'attribute' => $attribute_name, 'product' => $product, 'selected' => $selected2) ); ?>
                                 </div>
 
                             <?php endif; ?>
@@ -332,12 +328,12 @@ do_action('woocommerce_before_add_to_cart_form'); ?>
 
                                         if ( in_array($product->id, $nonPPproducts ) && $gateway->id == 'paypal')
                                             ?>
-                                            <input id="payment_method_<?php echo $gateway->id; ?>" type="radio" class="input-radio input-hidden" name="properties[payment_method]"
+                                            <input id="payment_method_<?php echo esc_attr( $gateway->id ); ?>" type="radio" class="input-radio input-hidden" name="properties[payment_method]"
                                                                                                    value="<?php echo esc_attr($gateway->id); ?>" <?php checked($gateway->chosen, true); ?>
                                                                                                    data-order_button_text="<?php echo esc_attr($gateway->order_button_text); ?>"/>
 
-                                        <label for="payment_method_<?php echo $gateway->id; ?>" class="panel-widget-style">
-                                            <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/payment/<?php echo $gateway->id; ?>-pm1.jpg"/>
+                                        <label for="payment_method_<?php echo esc_attr( $gateway->id ); ?>" class="panel-widget-style">
+                                            <img src="<?php echo esc_url( get_stylesheet_directory_uri() . '/images/payment/' . $gateway->id . '-pm1.jpg' ); ?>"/>
                                         </label>
                                     <?php }
                                 } else {
@@ -345,7 +341,7 @@ do_action('woocommerce_before_add_to_cart_form'); ?>
                                 }
                                 ?>
 
-                                <?php //endif;
+                                <?php
                                 ?>
 
                             </div>
