@@ -1,7 +1,7 @@
 <?php
 /**
  * Variable product add to cart
- * https://webtrafficgeeks.org/
+ * https://webtrafficgeeks.org/product/order-website-traffic/
  */
 if ( ! defined('ABSPATH') ) {
     exit;
